@@ -61,8 +61,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const gamesContainer = document.getElementById('games-container');
-            const apiUrl = 'https://games-server-aqw3.onrender.com/game/algs';
-
+            const apiUrl = 'https://games-server-aqw3.onrender.com/game/algs'; 
             fetch(apiUrl)
                 .then(response => {
                     if (!response.ok) {
@@ -76,10 +75,21 @@
                         data.forEach(game => {
                             const gameCard = document.createElement('div');
                             gameCard.classList.add('game-card');
+                            let aliasesHtml = '';
+                            if (game.aliases && game.aliases.length > 0) {
+                                game.aliases.forEach(alias => {
+                                    aliasesHtml += `
+                                        <p>Name: ${alias.name || 'N/A'}</p>
+                                        <p>Provider: ${alias.prov || 'N/A'}</p>
+                                    `;
+                                });
+                            } else {
+                                aliasesHtml = '<p>No alias information available.</p>';
+                            }
+
                             gameCard.innerHTML = `
-                                <h2>${game.name || 'Unknown Game'}</h2>
-                                <p>Provider: ${game.provider || 'N/A'}</p>
-                                <p>Description: ${game.description || 'No description available.'}</p>
+                                <h2>Game Type: ${game.gt || 'N/A'}</h2>
+                                ${aliasesHtml}
                             `;
                             gamesContainer.appendChild(gameCard);
                         });
